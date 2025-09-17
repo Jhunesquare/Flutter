@@ -41,3 +41,49 @@ Todos los cambios de este taller se desarrollaron en `feature/taller1`, luego se
    ```bash
    git clone https://github.com/Jhunesquare/Flutter.git
    cd Flutter
+   
+# Taller Flutter - go_router + Ciclo de Vida StatefulWidget
+
+## 📌 Descripción
+Este proyecto demuestra:
+- Navegación con `go_router`.
+- Paso de parámetros entre pantallas.
+- Diferencia entre `go`, `push` y `replace`.
+- Uso de widgets intermedios (`GridView`, `TabBar`, y un widget adicional).
+- Evidencia del ciclo de vida de un `StatefulWidget` (`initState`, `didChangeDependencies`, `build`, `setState`, `dispose`).
+
+---
+
+## 🚀 Arquitectura / Navegación
+Rutas configuradas en `router.dart`:
+- `/` → HomeScreen
+- `/detail/:msg` → DetailScreen (recibe un parámetro `msg`).
+- `/tabs` → TabsScreen (contiene `TabBar` y `GridView`).
+
+### Paso de parámetros
+- Ejemplo: `context.push('/detail/Hola desde PUSH')`
+- El parámetro `msg` se recibe en `DetailScreen` y se muestra en pantalla.
+
+---
+
+## 🧩 Widgets usados
+- **GridView:** mostrar una lista de 6 elementos en forma de cuadrícula.
+- **TabBar + TabBarView:** organizar secciones de navegación en una pantalla.
+- **Icon (extra widget):** mostrar el ícono de Flutter como adorno visual.
+
+---
+
+## 🔄 Ciclo de vida del StatefulWidget
+En `DetailScreen` se imprimen en consola los métodos:
+- `initState()` → cuando el widget se crea por primera vez.
+- `didChangeDependencies()` → cuando cambia el contexto o las dependencias.
+- `build()` → cada vez que se construye la interfaz.
+- `setState()` → cuando se actualiza el estado y se fuerza un nuevo `build`.
+- `dispose()` → cuando el widget se elimina de memoria.
+
+---
+
+## ▶️ Ejecución
+1. Instalar dependencias:
+   ```bash
+   flutter pub get
