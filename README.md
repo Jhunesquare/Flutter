@@ -41,7 +41,9 @@ Todos los cambios de este taller se desarrollaron en `feature/taller1`, luego se
    ```bash
    git clone https://github.com/Jhunesquare/Flutter.git
    cd Flutter
-#   
+   
+---
+
 # Taller Flutter - go_router + Ciclo de Vida StatefulWidget
 
 ## 📌 Descripción
