@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DetailScreen extends StatefulWidget {
   final String message;
@@ -26,12 +27,27 @@ class _DetailScreenState extends State<DetailScreen> {
     print("didChangeDependencies ejecutado");
   }
 
+  void _turnBack(BuildContext context) {
+    if (widget.message == '/detail/Hola desde GO' ||
+        widget.message == '/detail/Hola desde REPLACE') {
+      context.pop();
+    } else {
+      context.go('/');
+    }
+  }
+
   // Se ejecuta cada vez que se reconstruye la interfaz
   @override
   Widget build(BuildContext context) {
     print("build ejecutado");
     return Scaffold(
-      appBar: AppBar(title: const Text("Detalle")),
+      appBar: AppBar(
+        title: const Text("Detalle"),
+        leading: IconButton(
+          onPressed: () => _turnBack(context),
+          icon: const Icon(Icons.arrow_back),
+        ),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
