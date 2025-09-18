@@ -65,11 +65,6 @@ class GridExample extends StatelessWidget {
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 20),
-                      ElevatedButton.icon(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.close),
-                        label: const Text("Cerrar"),
-                      ),
                     ],
                   ),
                 );
