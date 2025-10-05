@@ -1,16 +1,21 @@
-# project
+# Ejercicios Flutter - Asincronía, Timer e Isolates
 
-A new Flutter project.
+## 1) Future / async / await
+- Se utiliza para operaciones **asíncronas que no bloquean la UI** (ej. llamadas a API).
+- Ejemplo: simulación de carga de datos con `Future.delayed`.
+- Estados mostrados: Cargando, Éxito, Error.
 
-## Getting Started
+## 2) Timer
+- Ideal para ejecutar tareas en intervalos de tiempo (cronómetro, cuenta regresiva).
+- Botones: Iniciar, Pausar, Reanudar, Reiniciar.
+- Uso de `Timer.periodic` para actualizar cada 1 segundo.
 
-This project is a starting point for a Flutter application.
+## 3) Isolate
+- Usado para **tareas pesadas de CPU** que bloquearían la UI si se ejecutaran en el hilo principal.
+- Comunicación entre hilos con `SendPort` y `ReceivePort`.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 4) Flujo de pantallas
+- **HomeScreen** → Menú con botones.
+- **FutureScreen** → Ejemplo de async/await.
+- **TimerScreen** → Cronómetro con controles.
+- **IsolateScreen** → Cálculo pesado en segundo hilo.
