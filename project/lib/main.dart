@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
       title: 'Chuck Norris Jokes',
       theme: ThemeData(primarySwatch: Colors.blue),
       routerConfig: router,
-      // mostrar mensajes claros cuando algo va mal con navigation (opcional)
     );
   }
 }
