@@ -1,39 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'services/api_service.dart';
-import 'services/auth_service.dart';
-import 'services/storage_service.dart';
-import 'providers/auth_provider.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/evidence_screen.dart';
+import 'firebase_options.dart';
+import 'services/firebase_service.dart';
+import 'screens/universidades_list_screen.dart';
+import 'screens/universidad_form_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // BASE_URL: cambia si tu API está en otra ruta.
-    const baseUrl = 'https://parking.visiontic.com.co';
-    final api = ApiService(baseUrl: baseUrl);
-    final authService = AuthService(api);
-    final storage = StorageService();
-
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider(authService: authService, storage: storage)),
-      ],
+    return Provider<FirebaseService>(
+      create: (_) => FirebaseService(),
       child: MaterialApp(
-        title: 'Auth Demo',
+        title: 'Universidades CRUD',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          useMaterial3: true,
+        ),
         routes: {
-          '/login': (_) => const LoginScreen(),
-          '/register': (_) => const RegisterScreen(),
-          '/evidence': (_) => const EvidenceScreen(),
+          '/': (_) => const UniversidadesListScreen(),
+          '/form': (_) => const UniversidadFormScreen(),
         },
-        initialRoute: '/login',
+        initialRoute: '/',
       ),
     );
   }
