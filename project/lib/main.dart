@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
-import 'services/firebase_service.dart';
-import 'screens/universidades_list_screen.dart';
-import 'screens/universidad_form_screen.dart';
+import 'src/core/data/local/task_dao.dart';
+import 'src/core/data/local/queue_dao.dart';
+import 'src/core/data/remote/api_service.dart';
+import 'src/core/data/repositories/task_repository.dart';
+import 'src/core/services/sync_service.dart';
+import 'src/providers/task_provider.dart';
+import 'src/screens/task_list_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+void main() {
   runApp(const MyApp());
 }
 
@@ -19,19 +17,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<FirebaseService>(
-      create: (_) => FirebaseService(),
+    // Configurar servicios
+    final taskDao = TaskDao();
+    final queueDao = QueueDao();
+    final apiService = ApiService(
+      baseUrl: 'http://localhost:3000', // Cambiar por tu API
+    );
+
+    final repository = TaskRepository(
+      taskDao: taskDao,
+      queueDao: queueDao,
+      api: apiService,
+    );
+
+    final syncService = SyncService(
+      queueDao: queueDao,
+      taskDao: taskDao,
+      api: apiService,
+    );
+
+    return ChangeNotifierProvider(
+      create: (_) => TaskProvider(
+        repository: repository,
+        syncService: syncService,
+      ),
       child: MaterialApp(
-        title: 'Universidades CRUD',
+        title: 'Task Manager',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           useMaterial3: true,
         ),
-        routes: {
-          '/': (_) => const UniversidadesListScreen(),
-          '/form': (_) => const UniversidadFormScreen(),
-        },
-        initialRoute: '/',
+        home: const TaskListScreen(),
       ),
     );
   }
