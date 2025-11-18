@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'services/api_service.dart';
-import 'services/auth_service.dart';
-import 'services/storage_service.dart';
-import 'providers/auth_provider.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/evidence_screen.dart';
+import 'src/core/data/local/task_dao.dart';
+import 'src/core/data/local/queue_dao.dart';
+import 'src/core/data/remote/api_service.dart';
+import 'src/core/data/repositories/task_repository.dart';
+import 'src/core/services/sync_service.dart';
+import 'src/providers/task_provider.dart';
+import 'src/screens/task_list_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,26 +14,40 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    // BASE_URL: cambia si tu API está en otra ruta.
-    const baseUrl = 'https://parking.visiontic.com.co';
-    final api = ApiService(baseUrl: baseUrl);
-    final authService = AuthService(api);
-    final storage = StorageService();
+    // Configurar servicios
+    final taskDao = TaskDao();
+    final queueDao = QueueDao();
+    final apiService = ApiService(
+      baseUrl: 'http://localhost:3000', // Cambiar por tu API
+    );
 
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => AuthProvider(authService: authService, storage: storage)),
-      ],
+    final repository = TaskRepository(
+      taskDao: taskDao,
+      queueDao: queueDao,
+      api: apiService,
+    );
+
+    final syncService = SyncService(
+      queueDao: queueDao,
+      taskDao: taskDao,
+      api: apiService,
+    );
+
+    return ChangeNotifierProvider(
+      create: (_) => TaskProvider(
+        repository: repository,
+        syncService: syncService,
+      ),
       child: MaterialApp(
-        title: 'Auth Demo',
-        routes: {
-          '/login': (_) => const LoginScreen(),
-          '/register': (_) => const RegisterScreen(),
-          '/evidence': (_) => const EvidenceScreen(),
-        },
-        initialRoute: '/login',
+        title: 'Task Manager',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          useMaterial3: true,
+        ),
+        home: const TaskListScreen(),
       ),
     );
   }
